@@ -1,8 +1,8 @@
 " Author: Alex Keating
 " Description: Report forge build errors in Solidity code
 
-call ale#Set('solidity_forge_build_executable', 'forge build')
-call ale#Set('solidity_forge_build_options', '')
+call ale#Set('solidity_forge_executable', 'forge build')
+call ale#Set('solidity_forge_options', '')
 
 function! ale_linters#solidity#forge#Handle(buffer, lines) abort
     " Matches patterns like the following:
@@ -39,14 +39,14 @@ function! ale_linters#solidity#forge#Handle(buffer, lines) abort
 endfunction
 
 function! ale_linters#solidity#solc#GetCommand(buffer) abort
-    let l:executable = ale#Var(a:buffer, 'solidity_forge_build_executable')
+    let l:executable = ale#Var(a:buffer, 'solidity_forge_executable')
 
-    return l:executable . ale#Pad(ale#Var(a:buffer, 'solidity_forge_build_options')) . ' %s'
+    return l:executable . ale#Pad(ale#Var(a:buffer, 'solidity_forge_options'))
 endfunction
 
 call ale#linter#Define('solidity', {
 \   'name': 'forge',
-\   'executable': {b -> ale#Var(b, 'solidity_forge_build_executable')},
+\   'executable': {b -> ale#Var(b, 'solidity_forge_executable')},
 \   'command': function('ale_linters#solidity#forge#GetCommand'),
 \   'callback': 'ale_linters#solidity#forge#Handle',
 \   'output_stream': 'stderr',
